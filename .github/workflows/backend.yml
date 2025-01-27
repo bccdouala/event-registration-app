@@ -1,0 +1,42 @@
+name: Backend CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'   # Runs when backend files change
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'backend/**'   # Runs on PRs that modify backend files
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        working-directory: backend
+        run: npm install
+
+      - name: Lint code
+        working-directory: backend
+        run: npm run lint
+
+      - name: Run tests
+        working-directory: backend
+        run: npm run test:ci
+
+      - name: Deploy Backend
+        run: |
+          # Add deployment command for backend
+          echo "Deploying backend"
